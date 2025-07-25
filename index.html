@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Buscador Reportajes</title>
+  <title>Emplead@s Archivo</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
     input, button { font-size: 1rem; padding: 8px; margin: 5px 0; }
@@ -12,10 +12,11 @@
   </style>
 </head>
 <body>
-  <h1>Buscador Reportajes</h1>
+  <h1>Emplead@s Archivo</h1>
 
   <input type="text" id="busqueda" placeholder="Buscar en Reportaje..." />
   <button onclick="buscar()">Buscar</button>
+  <button onclick="limpiar()">Limpiar</button>
 
   <div id="mensaje"></div>
   <table id="tablaResultados" style="display:none;">
@@ -87,6 +88,15 @@
         console.error(error);
       }
     }
+    function limpiar() {
+  document.getElementById('busqueda').value = '';
+  document.getElementById('mensaje').textContent = '';
+  const tabla = document.getElementById('tablaResultados');
+  const tbody = tabla.querySelector('tbody');
+  tbody.innerHTML = '';
+  tabla.style.display = 'none';
+}
+
   </script>
 </body>
 </html>

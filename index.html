@@ -71,20 +71,23 @@
           return;
         }
 
-        data.forEach(row => {
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td>${row.TEMPORADA || ''}</td>
-            <td>${row.PROGRAMA || ''}</td>
-            <td>${row.FECHA || ''}</td>
-            <td>${row.REDACTORA || ''}</td>
-            <td>${row.REPORTAJE || ''}</td>
-            <td>${row.DURACION || ''}</td>
-            <td>${row.CIUDAD || ''}</td>
-            <td>${row.DISCO || ''}</td>
-          `;
-          tbody.appendChild(tr);
-        });
+         data.forEach(row => {
+        const fechaISO = row.FECHA || '';
+        const fechaSimple = fechaISO.split('T')[0] || '';
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${row.TEMPORADA || ''}</td>
+          <td>${row.PROGRAMA || ''}</td>
+          <td>${fechaSimple}</td>
+          <td>${row.REDACTORA || ''}</td>
+          <td>${row.REPORTAJE || ''}</td>
+          <td>${row.DURACION || ''}</td>
+          <td>${row.CIUDAD || ''}</td>
+          <td>${row.DISCO || ''}</td>
+        `;
+        tbody.appendChild(tr);
+      });
 
         tabla.style.display = 'table';
 

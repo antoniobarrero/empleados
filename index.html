@@ -2,51 +2,161 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Emplead@s Archivo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Archivo Emplead@s</title>
+
+  <!-- Fuente moderna -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
-    input, button { font-size: 1rem; padding: 8px; margin: 5px 0; }
-    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; }
-    th { background: #eee; }
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f5f7fa;
+      font-family: 'Inter', sans-serif;
+      color: #333;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    header {
+      background-color: #fff;
+      padding: 20px 0;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      margin-bottom: 30px;
+    }
+    header img {
+      max-height: 120px;
+    }
+    h1 {
+      font-size: 1.8rem;
+      margin: 0;
+      color: #2a3f5d;
+    }
+    .search-box {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 30px;
+      gap: 10px;
+    }
+    .search-box input[type="text"] {
+      flex: 1 1 400px;
+      padding: 12px 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    .search-box button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      background-color: #005b9f;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .search-box button:hover {
+      background-color: #004080;
+    }
+    #mensaje {
+      text-align: center;
+      margin-top: 10px;
+      font-style: italic;
+      color: #555;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+      vertical-align: top;
+    }
+    th {
+      background-color: #e3eaf2;
+      color: #2a3f5d;
+      font-weight: 600;
+    }
+    tr:hover {
+      background-color: #f1f6fc;
+    }
+    mark {
+      background-color: #ffeb3b;
+      color: #000;
+      font-weight: 600;
+      border-radius: 3px;
+      padding: 0 2px;
+    }
   </style>
 </head>
 <body>
-  <h1>Emplead@s Archivo</h1>
 
-  <input type="text" id="busqueda" placeholder="Buscar un Reportaje..." />
-  <button onclick="buscar()">Buscar</button>
-  <button onclick="limpiar()">Limpiar</button>
+  <header>
+    <h1>Archivo Emplead@s</h1>
+  </header>
 
-  <div id="mensaje"></div>
-  <table id="tablaResultados" style="display:none;">
-    <thead>
-      <tr>
-        <th>Temporada</th>
-        <th>Programa</th>
-        <th>Fecha</th>
-        <th>Redactora</th>
-        <th>Reportaje</th>
-        <th>Duracion</th>
-        <th>Ciudad</th>
-        <th>Disco</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <div class="container">
+    <div class="search-box">
+      <input type="text" id="busqueda" placeholder="Buscar en Reportaje..." />
+      <button onclick="buscar()">Buscar</button>
+      <button onclick="limpiar()">Limpiar</button>
+    </div>
+
+    <div id="mensaje"></div>
+
+    <table id="resultados" style="display:none;">
+      <thead>
+        <tr>
+          <th>Temporada</th>
+          <th>Programa</th>
+          <th>Fecha</th>
+          <th>Redactora</th>
+          <th>Reportaje</th>
+          <th>Duracion</th>
+          <th>Ciudad</th>
+          <th>Disco</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <footer style="text-align: center; margin: 40px 0 20px; color: #666; font-size: 0.9em;">
+    &copy; <span id="year"></span> Técnica Audiovisual Digitsuit. Todos los derechos reservados.
+  </footer>
 
   <script>
-    const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyomuyIdnRLjBr7Dsq9bft9yrQyDqBTQCLv2TaH9uP238td6hx4POwqgUxAAKDjSTu6/exec";
-    document.getElementById('busqueda').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') {
-    buscar();
-  }
-});
+    const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxVHjJ0U-x8CHimQBt4_2SCgG7mJDF8NFYmfz4eVteUh7bD42KV6vjUVCOhGOLF36rg/exec";
+
+    function limpiar() {
+      document.getElementById('busqueda').value = '';
+      document.getElementById('mensaje').textContent = '';
+      const tabla = document.getElementById('resultados');
+      const tbody = tabla.querySelector('tbody');
+      tbody.innerHTML = '';
+      tabla.style.display = 'none';
+    }
 
     async function buscar() {
       const texto = document.getElementById('busqueda').value.trim();
       const mensaje = document.getElementById('mensaje');
-      const tabla = document.getElementById('tablaResultados');
+      const tabla = document.getElementById('resultados');
       const tbody = tabla.querySelector('tbody');
 
       mensaje.textContent = '';
@@ -71,23 +181,23 @@
           return;
         }
 
-         data.forEach(row => {
-        const fechaISO = row.FECHA || '';
-        const fechaSimple = fechaISO.split('T')[0] || '';
+        data.forEach(row => {
+          const fechaISO = row.FECHA || '';
+          const fechaSimple = fechaISO.split('T')[0] || '';
 
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${row.TEMPORADA || ''}</td>
-          <td>${row.PROGRAMA || ''}</td>
-          <td>${fechaSimple}</td>
-          <td>${row.REDACTORA || ''}</td>
-          <td>${row.REPORTAJE || ''}</td>
-          <td>${row.DURACION || ''}</td>
-          <td>${row.CIUDAD || ''}</td>
-          <td>${row.DISCO || ''}</td>
-        `;
-        tbody.appendChild(tr);
-      });
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${row.TEMPORADA || ''}</td>
+            <td>${row.PROGRAMA || ''}</td>
+            <td>${fechaSimple}</td>
+            <td>${row.REDACTORA || ''}</td>
+            <td>${row.REPORTAJE || ''}</td>
+            <td>${row.DURACION || ''}</td>
+            <td>${row.CIUDAD || ''}</td>
+            <td>${row.DISCO || ''}</td>
+          `;
+          tbody.appendChild(tr);
+        });
 
         tabla.style.display = 'table';
 
@@ -96,15 +206,15 @@
         console.error(error);
       }
     }
-    function limpiar() {
-  document.getElementById('busqueda').value = '';
-  document.getElementById('mensaje').textContent = '';
-  const tabla = document.getElementById('tablaResultados');
-  const tbody = tabla.querySelector('tbody');
-  tbody.innerHTML = '';
-  tabla.style.display = 'none';
-}
 
+    document.getElementById('busqueda').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        buscar();
+      }
+    });
+
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
+
 </body>
 </html>

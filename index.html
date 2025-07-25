@@ -14,7 +14,7 @@
 <body>
   <h1>Emplead@s Archivo</h1>
 
-  <input type="text" id="busqueda" placeholder="Buscar en Reportaje..." />
+  <input type="text" id="busqueda" placeholder="Buscar un Reportaje..." />
   <button onclick="buscar()">Buscar</button>
   <button onclick="limpiar()">Limpiar</button>
 
@@ -37,6 +37,11 @@
 
   <script>
     const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyomuyIdnRLjBr7Dsq9bft9yrQyDqBTQCLv2TaH9uP238td6hx4POwqgUxAAKDjSTu6/exec";
+    document.getElementById('busqueda').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    buscar();
+  }
+});
 
     async function buscar() {
       const texto = document.getElementById('busqueda').value.trim();

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Buscador de Reportajes</title>
+</head>
+<body>
+  <h1>Buscador de reportajes</h1>
+
+  <input type="text" id="buscar" placeholder="Escribe palabras clave..." />
+  <button onclick="buscar()">Buscar</button>
+  <p id="estado"></p>
+  <div id="resultados"></div>
+
+  <script>
+    const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxVHjJ0U-x8CHimQBt4_2SCgG7mJDF8NFYmfz4eVteUh7bD42KV6vjUVCOhGOLF36rg/exec";
+
+    async function buscar() {
+      const texto = document.getElementById("buscar").value;
+      const estado = document.getElementById("estado");
+      const resultadosDiv = document.getElementById("resultados");
+
+      if (!texto.trim()) {
+        alert("Escribe algo para buscar");
+        return;
+      }
+
+      estado.textContent = "Buscando...";
+      resultadosDiv.innerHTML = "";
+
+      try {
+        const res = await fetch(WEBAPP_URL, {
+          method: "POST",
+          body: JSON.stringify({ texto }),
+          headers: { "Content-Type": "application/json" },
+        });
+
+        const datos = await res.json();
+        estado.textContent = "";
+
+        if (datos.error) {
+          resultadosDiv.innerHTML = `<p style="color:red;">Error: ${datos.error}</p>`;
+          return;
+        }
+
+        if (datos.length === 0) {
+          resultadosDiv.innerHTML = "<p>No se encontraron resultados</p>";
+          return;
+        }
+
+        // Crea tabla con resultados
+        let html = "<table border='1' cellpadding='5'><thead><tr>";
+        Object.keys(datos[0]).forEach(key => {
+          html += `<th>${key}</th>`;
+        });
+        html += "</tr></thead><tbody>";
+
+        datos.forEach(fila => {
+          html += "<tr>";
+          Object.values(fila).forEach(valor => {
+            html += `<td>${valor}</td>`;
+          });
+          html += "</tr>";
+        });
+
+        html += "</tbody></table>";
+        resultadosDiv.innerHTML = html;
+
+      } catch (err) {
+        estado.textContent = "";
+        resultadosDiv.innerHTML = `<p style="color:red;">Error al conectar: ${err.message}</p>`;
+      }
+    }
+  </script>
+</body>
+</html>
